@@ -5,7 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+env:
+  docker_tag: $(date +%s)
 jobs:
 
   build:
@@ -21,6 +22,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ldsingh/demo-app-hello-world:$(date +%s)
+      run: docker build . --file Dockerfile --tag ldsingh/demo-app-hello-world:$docker_tag
     - name: Docker Push
-      run: docker push ldsingh/demo-app-hello-world  
+      run: docker push ldsingh/demo-app-hello-world:$docker_tag  
