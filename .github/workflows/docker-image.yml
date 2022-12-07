@@ -20,6 +20,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}
+      run: docker build . --file Dockerfile --tag latest --tag ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}
     - name: Docker Push
-      run: docker push ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}  
+      run: docker push --all-tags ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}  
