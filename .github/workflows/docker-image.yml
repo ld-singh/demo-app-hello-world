@@ -31,11 +31,10 @@ jobs:
     - name: Docker Push
       run: docker image push --all-tags ldsingh/demo-app-hello-world
       
-    - name: Setup AWS CLI
-      uses: chrislennon/action-aws-cli@v1.1
     - name: Test AWS CLI  
       run: |
         aws s3 ls
+        webserver_ip=`aws ec2 --region ap-southeast-2 describe-instances --filters "Name=tag:Name,Values=Webserver" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text`
         aws s3 cp s3://terraform-state-bucket-ls-demo/myterrakey.pem myterrakey.pem
-        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@3.25.166.196 "docker ps"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker ps"
       
