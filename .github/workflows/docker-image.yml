@@ -14,6 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Configure AWS Credentials Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-2
     - name: docker login
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
@@ -24,3 +30,12 @@ jobs:
       run: docker build . --file Dockerfile --tag ldsingh/demo-app-hello-world:latest --tag ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}
     - name: Docker Push
       run: docker image push --all-tags ldsingh/demo-app-hello-world
+      
+    - name: Setup AWS CLI
+      uses: chrislennon/action-aws-cli@v1.1
+    - name: Test AWS CLI  
+      run: |
+        aws s3 ls
+        aws s3 cp s3://terraform-state-bucket-ls-demo/myterrakey.pem myterrakey.pem
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@3.25.166.196 "docker ps"
+      
