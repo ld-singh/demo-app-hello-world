@@ -39,4 +39,10 @@ jobs:
         chmod 400 myterrakey.pem
         echo ${webserver_ip}
         ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker ps"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker stop demo-webserver-app"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker rm demo-webserver-app"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker rm demo-webserver-app"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker run -d -p 3000:3000 --name demo-webserver-app ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}"
+        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker ps"
+        
       
