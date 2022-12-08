@@ -40,16 +40,11 @@ jobs:
         echo ${webserver_ip}
         ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker ps"
         var_docker=$(ssh -q -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} 'docker ps -a -f status=running --format "{{.Names}}"| grep demo-webserver-app')
-        ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} '
-        if [[ ! -z ${var_docker} ]] 
+        if [[ ! -z "$var_docker" ]]
         then
-          docker stop demo-webserver-app
-        fi'
-         ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} '
-        if [[ ! -z ${var_docker} ]] 
-        then
-          docker rm demo-webserver-app
-        fi'
+          ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} 'docker stop demo-webserver-app'
+          ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} 'docker rm demo-webserver-app'
+        fi 
         ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker run -d -p 3000:3000 --name demo-webserver-app ldsingh/demo-app-hello-world:${GITHUB_RUN_ID}"
         ssh -o StrictHostKeyChecking=no -i myterrakey.pem ubuntu@${webserver_ip} "docker ps"
         
