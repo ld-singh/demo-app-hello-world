@@ -5,7 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:  
+  workflow_dispatch:
+  repository_dispatch:
 jobs:
 
   build:
@@ -31,7 +32,7 @@ jobs:
     - name: Docker Push
       run: docker image push --all-tags ldsingh/demo-app-hello-world
       
-    - name: Test AWS CLI  
+    - name: Deploy docker Image to EC2
       run: |
         aws s3 ls
         webserver_ip=`aws ec2 --region ap-southeast-2 describe-instances --filters "Name=tag:Name,Values=Webserver" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text`
