@@ -22,7 +22,7 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: demo-app-container
-    image: ldsingh/demo-app-hello-world:sha256:df286eb78dec2f0cefb684a4592f2a16b15af844785ef68b18f45cef2e50a4f3
+    image: ldsingh/demo-app-hello-world@sha256:df286eb78dec2f0cefb684a4592f2a16b15af844785ef68b18f45cef2e50a4f3
     command: ['index.js']
     securityContext:
        privileged: false
